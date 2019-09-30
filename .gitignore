@@ -1,0 +1,4 @@
+**/ignore
+compat
+node_modules
+package-lock.json
