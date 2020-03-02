@@ -4,9 +4,10 @@
  *
  * @private
  **/
+
+const { type } = require("@kisbox/utils")
 const {
-  $meta: { $sideScope },
-  any: { isPromise }
+  $meta: { $sideScope }
 } = require("@kisbox/helpers")
 
 const $events = require("./events")
@@ -43,7 +44,7 @@ $traps.callFunction = function (context, key, wrapped, args) {
   const returned = wrapped.apply(context, args)
   const events = $events.get(context)
 
-  if (isPromise(returned)) {
+  if (type(returned) === "promise") {
     returned.then(value => {
       events.trigger(context, key, [args, value, key, context])
     })
