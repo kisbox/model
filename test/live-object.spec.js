@@ -72,6 +72,14 @@ describe("liveObject", () => {
       live.$pull("bar", obj, "foo")
       expect(live.bar).toBe(true)
     })
+
+    it("creates enumerable properties", () => {
+      live.foo = true
+      live2.$pull("foo", live)
+      live2.$pull("bar", live)
+      expect(Object.keys(live)).toEqual(["foo", "bar"])
+      expect(Object.keys(live2)).toEqual(["foo", "bar"])
+    })
   })
 
   describe(".$push()", () => {
@@ -113,6 +121,14 @@ describe("liveObject", () => {
       live.$push("foo", obj, "bar")
       expect(obj.bar).toBe(true)
     })
+
+    it("creates enumerable properties", () => {
+      live.foo = true
+      live.$push("foo", live2)
+      live.$push("bar", live2)
+      expect(Object.keys(live)).toEqual(["foo", "bar"])
+      expect(Object.keys(live2)).toEqual(["foo", "bar"])
+    })
   })
 
   /* $define/$compute/$set */
@@ -125,6 +141,12 @@ describe("liveObject", () => {
       expect(live.foo).toEqual(NaN)
       live.baz = 3
       expect(live.foo).toBe(5)
+      expect(Object.keys(live)).toEqual(["bar", "baz", "foo"])
+    })
+
+    it("creates enumerable properties", () => {
+      live.$define("foo", ["bar", "baz"], () => live.bar + live.baz)
+      expect(Object.keys(live)).toEqual(["bar", "baz", "foo"])
     })
   })
 

@@ -21,6 +21,8 @@ describe("observable", () => {
       observable.$on("foo", () => triggered = true)
       observable.foo = true
       expect(triggered).toBe(true)
+      expect(observable.foo).toBe(true)
+      expect(Object.keys(observable)).toEqual(["foo"])
     })
 
     it("passes [value, old, key, context] when trapping values", () => {
@@ -40,6 +42,8 @@ describe("observable", () => {
       observable.$on("action", () => triggered = true)
       observable.action()
       expect(triggered).toBe(true)
+      expect(typeof observable.action).toBe("function")
+      expect(Object.keys(observable)).toEqual(["action"])
     })
 
     it("passes [arguments, returned, key, context] when trapping actions", () => {

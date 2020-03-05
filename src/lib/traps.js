@@ -7,7 +7,8 @@
 
 const { type } = require("@kisbox/utils")
 const {
-  $meta: { $sideScope }
+  $meta: { $sideScope },
+  property: { lock, setProperty }
 } = require("@kisbox/helpers")
 
 const $events = require("./events")
@@ -29,14 +30,9 @@ $traps.trapFunction = function (target, key) {
   const wrapped = target[key]
   if (wrapped && wrapped.isTrapped) return
 
-  Object.defineProperty(target, key, {
-    configurable: false,
-    writable: false,
-    value () {
-      return $traps.callFunction(this, key, wrapped, arguments)
-    }
+  lock(target, key, function () {
+    return $traps.callFunction(this, key, wrapped, arguments)
   })
-
   target[key].isTrapped = true
 }
 
@@ -61,13 +57,7 @@ $traps.trapValue = function (target, key) {
 
   trapped[key] = target[key]
 
-  // enumerable by default
-  let enumerable
-  if (!(key in target)) enumerable = true
-
-  Object.defineProperty(target, key, {
-    configurable: true,
-    enumerable,
+  setProperty(target, key, {
     get () {
       return $traps(this)[key]
     },
