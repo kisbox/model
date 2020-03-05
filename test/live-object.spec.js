@@ -30,6 +30,45 @@ describe("liveObject", () => {
       expect(live2.bar).toBe(false)
       expect(live.bar).toBe(false)
     })
+
+    it("creates enumerable properties", () => {
+      live.$link(live2, ["foo", "bar"])
+      expect(Object.keys(live)).toEqual(["foo", "bar"])
+      expect(Object.keys(live2)).toEqual(["foo", "bar"])
+    })
+  })
+
+  describe(".$export()", () => {
+    it("binds properties across objects", () => {
+      live.foo = false
+      live.$export(live2, "foo")
+
+      expect(live.foo).toBe(false)
+      expect(live2.foo).toBe(false)
+
+      live.foo = true
+      expect(live.foo).toBe(true)
+      expect(live2.foo).toBe(true)
+    })
+
+    it("pushes changes to non-live objects", () => {
+      live.foo = false
+      live.$export(obj, "foo")
+      expect(live.foo).toBe(false)
+      expect(obj.foo).toBe(false)
+
+      live.foo = true
+      expect(live.foo).toBe(true)
+      expect(obj.foo).toBe(true)
+    })
+
+    it("creates enumerable properties", () => {
+      live.foo = true
+      live.$export(live2, "foo")
+      live.$export(live2, "bar")
+      expect(Object.keys(live)).toEqual(["foo", "bar"])
+      expect(Object.keys(live2)).toEqual(["foo", "bar"])
+    })
   })
 
   /* $pull/$push */
