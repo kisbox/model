@@ -5,7 +5,8 @@
 const { forArgs } = require("@kisbox/utils")
 
 const {
-  constructor: { shortcuts, call }
+  constructor: { shortcuts, call },
+  any: { isInstance }
 } = require("@kisbox/helpers")
 
 const Observable = require("./observable")
@@ -73,10 +74,12 @@ class LiveObject extends Observable {
 
   /* $define, $compute, $set */
   $define (key, depends, definition) {
-    const compute = function () {
+    const compute = () => {
       this[key] = definition.call(this, this)
     }
     this.$on(depends, compute)
+
+    if (isInstance(this)) compute()
 
     // TODO: Plutôt utiliser `trap`
     $events(this).put(`outdate:${key}`, compute)

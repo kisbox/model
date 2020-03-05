@@ -136,9 +136,11 @@ describe("liveObject", () => {
   describe(".$define()", () => {
     it("defines a dynamic property", () => {
       live.$define("foo", ["bar", "baz"], () => live.bar + live.baz)
-      expect(live.foo).toBe(undefined)
+      expect(live.foo).toEqual(NaN)
+
       live.bar = 2
       expect(live.foo).toEqual(NaN)
+
       live.baz = 3
       expect(live.foo).toBe(5)
       expect(Object.keys(live)).toEqual(["bar", "baz", "foo"])
