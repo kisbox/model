@@ -12,17 +12,37 @@ describe("Observable", () => {
 })
 
 describe("observable", () => {
-  let observable
-  beforeEach(() => observable = new Observable())
+  let observable, child
+  beforeEach(() => {
+    observable = new Observable()
+    child = Object.create(observable)
+  })
 
   describe(".$on()", () => {
     it("traps a value", () => {
-      let triggered = false
-      observable.$on("foo", () => triggered = true)
+      let count = 0
+
+      observable.$on("foo", () => count++)
       observable.foo = true
-      expect(triggered).toBe(true)
+      expect(count).toBe(1)
       expect(observable.foo).toBe(true)
-      expect(Object.keys(observable)).toEqual(["foo"])
+
+      child.foo = false
+      expect(count).toBe(2)
+      expect(child.foo).toBe(false)
+      expect(observable.foo).toBe(true)
+    })
+
+    it("passes context when trapping a value", () => {
+      observable.$on("foo", function () {
+        expect(this).toBe(observable)
+      })
+      observable.foo = true
+
+      observable.$on("bar", function () {
+        expect(this).toBe(child)
+      })
+      child.bar = true
     })
 
     it("passes [value, old, key, context] when trapping values", () => {
@@ -37,13 +57,17 @@ describe("observable", () => {
     })
 
     it("traps an action", () => {
-      let triggered = false
+      let count = 0
+
       observable.action = () => {}
-      observable.$on("action", () => triggered = true)
+      observable.$on("action", () => count++)
       observable.action()
-      expect(triggered).toBe(true)
+      expect(count).toBe(1)
       expect(typeof observable.action).toBe("function")
       expect(Object.keys(observable)).toEqual(["action"])
+
+      child.action()
+      expect(count).toBe(2)
     })
 
     it("passes [arguments, returned, key, context] when trapping actions", () => {
@@ -55,6 +79,29 @@ describe("observable", () => {
         expect(context).toBe(observable)
       })
       observable.action("foo", "bar")
+
+      observable.action2 = () => 4321
+      observable.$on("action2", (args, returned, key, context) => {
+        expect(returned).toBe(4321)
+        expect(Array.from(args)).toEqual(["bar", "foo"])
+        expect(key).toBe("action2")
+        expect(context).toBe(child)
+      })
+      child.action2("bar", "foo")
+    })
+
+    it("passes context when trapping an action", () => {
+      observable.action = () => true
+      observable.$on("action", function () {
+        expect(this).toBe(observable)
+      })
+      observable.action()
+
+      observable.action2 = () => true
+      observable.$on("action2", function () {
+        expect(this).toBe(child)
+      })
+      child.action2()
     })
   })
 
