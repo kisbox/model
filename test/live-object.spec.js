@@ -189,6 +189,25 @@ describe("liveObject", () => {
       live.$define("foo", ["bar", "baz"], () => live.bar + live.baz)
       expect(Object.keys(live)).toEqual(["bar", "baz", "foo"])
     })
+
+    it("supports prototype-level definitions", () => {
+      class Square extends LiveObject {}
+      const proto = Square.prototype
+
+      proto.$define("area", ["length"], function (the) {
+        expect(the).toBe(instance)
+        expect(this).toBe(instance)
+        return the.length * the.length
+      })
+      expect(proto.area).toBe(undefined)
+
+      const instance = new Square()
+      instance.length = 10
+      expect(instance.length).toBe(10)
+      expect(instance.area).toBe(100)
+      expect(proto.length).toBe(undefined)
+      expect(proto.area).toEqual(undefined)
+    })
   })
 
   describe(".$set()", () => {

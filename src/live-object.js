@@ -74,12 +74,12 @@ class LiveObject extends Observable {
 
   /* $define, $compute, $set */
   $define (key, depends, definition) {
-    const compute = () => {
+    const compute = function () {
       this[key] = definition.call(this, this)
     }
     this.$on(depends, compute)
 
-    if (isInstance(this)) compute()
+    if (isInstance(this)) compute.call(this)
 
     // TODO: Plutôt utiliser `trap`
     $events(this).put(`outdate:${key}`, compute)
