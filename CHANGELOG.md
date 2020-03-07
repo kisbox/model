@@ -18,6 +18,13 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 1.0.0-beta.2 - 2020-03-07
+
+### Fixed
+
+- Logic: Fix traps enumerability.
+- Logic: Fix `$define` initial computation.
+
 ## 1.0.0-beta.1 - 2020-02-29
 
 ### Fixed
