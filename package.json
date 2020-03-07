@@ -20,7 +20,7 @@
     "tag-release": "[ \"$version\" ] && git tag -s \"$version\" -m \"Release $version\"",
     "push-release": "git push --follow-tags",
     "make-release": "npm run test && npm run build && npm run commit-release",
-    "publish-release": "npm run tag-release && npm run push-release && npm publish --tag beta"
+    "publish-release": "npm run tag-release && npm run push-release && npm publish"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
