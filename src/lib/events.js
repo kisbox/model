@@ -38,14 +38,14 @@ const $events = $util("/events/", {
   },
 
   trigger (context, type, args) {
-    // Local handlers.
-    reallyTrigger(context, this.handlers[type], args)
-    reallyTrigger(context, this.handlers["*"], args)
-
     // Inherited handlers.
     const proto = getPrototypeOf(this.provider)
     const inherited = $events.get(proto)
     if (inherited) inherited.trigger(context, type, args)
+
+    // Local handlers.
+    reallyTrigger(context, this.handlers[type], args)
+    reallyTrigger(context, this.handlers["*"], args)
   }
 })
 
