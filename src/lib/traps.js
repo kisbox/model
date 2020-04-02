@@ -82,6 +82,13 @@ $traps.setValue = function (target, key, value, check) {
     const events = $events(target)
     events.trigger(target, key, [value, old, key, target])
     events.trigger(target, "$set", [value, old, key, target])
+
+    // Auto-resolve promises
+    if (type(value) === "promise") {
+      value
+        .then(resolved => target[key] = resolved)
+        .catch(rejected => target[key] = rejected)
+    }
   }
 }
 
