@@ -75,7 +75,9 @@ class LiveObject extends Observable {
   /* $define, $compute, $set */
   $define (key, depends, definition) {
     const compute = function () {
-      this[key] = definition.call(this, this)
+      if (allKeysAreSet(this, depends)) {
+        this[key] = definition.call(this, this)
+      }
     }
     this.$on(depends, compute)
 
@@ -105,6 +107,13 @@ class LiveObject extends Observable {
 // TODO: make it cleaner
 const { safe } = shortcuts(LiveObject)
 Object.assign(safe, call(Observable))
+
+/* Helpers */
+function allKeysAreSet (object, keys) {
+  return keys.reduce((bool, key) => {
+    return bool && object[key] !== undefined
+  })
+}
 
 /* Export */
 // TODO: encapsulate Trapped
