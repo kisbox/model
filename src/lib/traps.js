@@ -83,11 +83,16 @@ $traps.setValue = function (target, key, value, check) {
     events.trigger(target, key, [value, old, key, target])
     events.trigger(target, "$set", [value, old, key, target])
 
-    // Auto-resolve promises
+    // Auto-update promises...
     if (type(value) === "promise") {
       value
-        .then(resolved => target[key] = resolved)
-        .catch(rejected => target[key] = rejected)
+        .catch(x => x)
+        .then(resolved => {
+          // ... only when key hasn't been changed meanwhile.
+          if (target[key] === value) {
+            $traps.setValue(target, key, resolved)
+          }
+        })
     }
   }
 }
