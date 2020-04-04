@@ -1,6 +1,6 @@
 {
   "name": "@kisbox/model",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "Kisbox model",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "repository": "github:kisbox/model",
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
-    "@kisbox/helpers": "^1.0.0-beta.2",
+    "@kisbox/helpers": "^1.0.0-beta.4",
     "@kisbox/utils": "^1.0.0-beta.2",
     "core-js": "^3.6.4"
   }
