@@ -175,10 +175,10 @@ describe("liveObject", () => {
   describe(".$define()", () => {
     it("defines a dynamic property", () => {
       live.$define("foo", ["bar", "baz"], () => live.bar + live.baz)
-      expect(live.foo).toEqual(NaN)
+      expect(live.foo).toEqual(undefined)
 
       live.bar = 2
-      expect(live.foo).toEqual(NaN)
+      expect(live.foo).toEqual(undefined)
 
       live.baz = 3
       expect(live.foo).toBe(5)
@@ -187,6 +187,10 @@ describe("liveObject", () => {
 
     it("creates enumerable properties", () => {
       live.$define("foo", ["bar", "baz"], () => live.bar + live.baz)
+      expect(Object.keys(live)).toEqual(["bar", "baz"])
+      live.bar = 2
+      expect(Object.keys(live)).toEqual(["bar", "baz"])
+      live.baz = 3
       expect(Object.keys(live)).toEqual(["bar", "baz", "foo"])
     })
 
