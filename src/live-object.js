@@ -18,18 +18,24 @@ const $traps = require("./lib/traps")
 class LiveObject extends Observable {
   /* link/import/export/pick */
   $link (target, keys) {
+    if (!target) return
+
     safe.$pick(this, target, keys)
     safe.$export(this, target, keys)
     safe.$export(target, this, keys)
   }
 
   $export (target, keys, transformer) {
+    if (!target) return
+
     forArgs(["value", "atoms"], arguments, (target, key) => {
       safe.$push(this, key, target, key, transformer)
     })
   }
 
   $import (target, keys, transformer) {
+    if (!target) return
+
     forArgs(["value", "atoms"], arguments, (target, key) => {
       if (key in target) {
         safe.$pull(this, key, target, key, transformer)
@@ -38,6 +44,8 @@ class LiveObject extends Observable {
   }
 
   $pick (target, keys, transformer) {
+    if (!target) return
+
     forArgs(["value", "atoms"], arguments, (target, key) => {
       if (key in target) {
         const value = target[key]
