@@ -118,9 +118,7 @@ Object.assign(safe, call(Observable))
 
 /* Helpers */
 function allKeysAreSet (object, keys) {
-  return keys.reduce((bool, key) => {
-    return bool && object[key] !== undefined
-  })
+  return keys.reduce((bool, key) => bool && object[key] !== undefined, true)
 }
 
 /* Export */
