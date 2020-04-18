@@ -1,6 +1,6 @@
 {
   "name": "@kisbox/model",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.6",
   "description": "Kisbox model",
   "author": "MisterTicot <mister.ticot@cosmic.plus>",
   "repository": "github:kisbox/model",
@@ -26,15 +26,15 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
     "eslint": "^6.8.0",
     "jasmine": "^3.5.0",
     "prettier": "^1.19.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
-    "@kisbox/helpers": "^1.0.0-beta.4",
+    "@kisbox/helpers": "^1.0.0-beta.6",
     "@kisbox/utils": "^1.0.0-beta.2",
-    "core-js": "^3.6.4"
+    "core-js": "^3.6.5"
   }
 }

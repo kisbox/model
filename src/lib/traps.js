@@ -8,6 +8,7 @@
 const { type } = require("@kisbox/utils")
 const {
   $meta: { $sideScope },
+  function: { either },
   property: { lock, setProperty }
 } = require("@kisbox/helpers")
 
@@ -18,11 +19,11 @@ const $traps = $sideScope("/traps/")
 
 /* Library */
 
-$traps.trapProperty = function (target, key) {
+$traps.trapProperty = function (target, key, guard) {
   if (typeof target[key] === "function") {
     $traps.trapFunction(target, key)
   } else {
-    $traps.trapValue(target, key)
+    $traps.trapValue(target, key, guard)
   }
 }
 
@@ -51,18 +52,19 @@ $traps.callFunction = function (context, key, wrapped, args) {
   return returned
 }
 
-$traps.trapValue = function (target, key) {
+$traps.trapValue = function (target, key, guard) {
   const trapped = $traps(target)
   if (key in trapped) return
 
-  trapped[key] = target[key]
+  trapped[key] = filter(guard, target[key])
 
   setProperty(target, key, {
     get () {
       return $traps(this)[key]
     },
     set (value) {
-      $traps.setValue(this, key, value, true)
+      const filtered = filter(guard, value)
+      $traps.setValue(this, key, filtered, true)
     }
   })
 }
@@ -95,6 +97,11 @@ $traps.setValue = function (target, key, value, check) {
         })
     }
   }
+}
+
+/* Helpers */
+function filter (func, value) {
+  return func ? either(func(value), value) : value
 }
 
 /* Exports */
