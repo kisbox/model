@@ -24,7 +24,7 @@ describe("liveArray", () => {
     it("calls callback on each item added to liveArray", () => {
       let sum = 0
 
-      liveArray.$forEach(x => sum += x)
+      liveArray.$forEach((x) => sum += x)
       expect(sum).toBe(3)
 
       liveArray.push(5)
@@ -72,7 +72,7 @@ describe("liveArray", () => {
       liveArray.push(5)
       liveArray.push(8)
 
-      liveArray.$forExit(x => sum += x)
+      liveArray.$forExit((x) => sum += x)
       expect(sum).toBe(0)
 
       liveArray.pop()
@@ -130,31 +130,31 @@ describe("liveArray", () => {
   })
 
   it("produces a live projection", () => {
-    const liveMap = liveArray.$map(x => x + 1)
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    const liveMap = liveArray.$map((x) => x + 1)
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
 
     liveArray[0] = 12
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
 
     liveArray.push("foo")
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
 
     liveArray.unshift("bar")
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
 
     liveArray[2] = 21
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
 
     liveArray.pop()
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
 
     liveArray.shift()
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
 
     liveArray.splice(1, 0, "foo", "bar")
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
 
     liveArray.splice(1, 2)
-    expect(liveMap).toEqual(liveArray.map(x => x + 1))
+    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
   })
 })

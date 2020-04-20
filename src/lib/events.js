@@ -52,7 +52,7 @@ const $events = $util("/events/", {
 function reallyTrigger (context, handlers, args) {
   if (!handlers) return
 
-  handlers.forEach(handler => {
+  handlers.forEach((handler) => {
     noThrow(() => handler.apply(context, args))
   })
 }

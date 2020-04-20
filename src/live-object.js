@@ -100,7 +100,7 @@ class LiveObject extends Observable {
     const events = $events.get(this)
     if (!events) return
 
-    forArgs(["atoms"], arguments, key => {
+    forArgs(["atoms"], arguments, (key) => {
       events.trigger(`outdate:${key}`)
     })
   }

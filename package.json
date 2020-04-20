@@ -11,7 +11,7 @@
   "scripts": {
     "test": "jasmine 'test/**/*.spec.js'",
     "clean": "rm -rf compat/*",
-    "prettier": "prettier --write --no-semi '{src,test}/**/*.{js,json,md}' '*.{js,json,md}'",
+    "prettier": "prettier --write --no-semi --trailing-comma none '{src,test}/**/*.{js,json,md}' '*.{js,json,md}'",
     "eslint": "eslint --fix '{src,test}/**/*.js' '*.js'",
     "lint": "npm run prettier && npm run eslint",
     "build": "babel src --out-dir compat",
@@ -29,7 +29,7 @@
     "@babel/preset-env": "^7.9.5",
     "eslint": "^6.8.0",
     "jasmine": "^3.5.0",
-    "prettier": "^1.19.1"
+    "prettier": "^2.0.4"
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",

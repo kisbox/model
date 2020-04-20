@@ -50,7 +50,7 @@ class Observable {
    * TODO: remove this one! :)
    */
   $trigger (types, ...args) {
-    forArgs(["atoms"], [types], type => {
+    forArgs(["atoms"], [types], (type) => {
       const events = $events.get(this)
       if (events) events.trigger(this, type, args)
     })

@@ -42,7 +42,7 @@ $traps.callFunction = function (context, key, wrapped, args) {
   const events = $events.get(context)
 
   if (type(returned) === "promise") {
-    returned.then(value => {
+    returned.then((value) => {
       events.trigger(context, key, [args, value, key, context])
     })
   } else {
@@ -88,8 +88,8 @@ $traps.setValue = function (target, key, value, check) {
     // Auto-update promises...
     if (type(value) === "promise") {
       value
-        .catch(x => x)
-        .then(resolved => {
+        .catch((x) => x)
+        .then((resolved) => {
           // ... only when key hasn't been changed meanwhile.
           if (target[key] === value) {
             $traps.setValue(target, key, resolved)

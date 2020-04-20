@@ -92,7 +92,7 @@ const mixinMethods = [
   "$ignore",
   "$destroy"
 ]
-mixinMethods.forEach(key => proto[key] = Observable.prototype[key])
+mixinMethods.forEach((key) => proto[key] = Observable.prototype[key])
 
 /* Trap-conscious wrappers */
 
@@ -113,7 +113,7 @@ function methodWrapper (method) {
   }
 }
 
-wrappedMethods.forEach(key => proto[key] = methodWrapper(key))
+wrappedMethods.forEach((key) => proto[key] = methodWrapper(key))
 
 /* Helpers: Setup Traps */
 
@@ -188,7 +188,7 @@ proto.$on("splice", function (args, returned) {
     })
   }
   if (returned.length) {
-    returned.forEach(item => {
+    returned.forEach((item) => {
       this.$remove(item)
     })
   }
