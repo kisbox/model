@@ -187,9 +187,9 @@ describe("liveObject", () => {
 
     it("creates enumerable properties", () => {
       live.$define("foo", ["bar", "baz"], () => live.bar + live.baz)
-      expect(Object.keys(live)).toEqual(["bar", "baz"])
+      expect(Object.keys(live)).toEqual(["bar", "baz", "foo"])
       live.bar = 2
-      expect(Object.keys(live)).toEqual(["bar", "baz"])
+      expect(Object.keys(live)).toEqual(["bar", "baz", "foo"])
       live.baz = 3
       expect(Object.keys(live)).toEqual(["bar", "baz", "foo"])
     })

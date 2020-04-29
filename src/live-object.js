@@ -85,6 +85,8 @@ class LiveObject extends Observable {
     const compute = function () {
       if (allKeysAreSet(this, depends)) {
         this[key] = definition.call(this, this)
+      } else {
+        this[key] = undefined
       }
     }
     this.$on(depends, compute)
