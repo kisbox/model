@@ -2,11 +2,11 @@
 /**
  * Methods that allow to spread an object changes toward another.
  */
-const { forArgs } = require("@kisbox/utils")
-
+const { forArgs, type } = require("@kisbox/utils")
 const {
   constructor: { shortcuts, call },
-  any: { isInstance }
+  any: { isInstance },
+  error: { noThrow }
 } = require("@kisbox/helpers")
 
 const Observable = require("./observable")
@@ -82,19 +82,11 @@ class LiveObject extends Observable {
 
   /* $define, $compute, $set */
   $define (key, depends, definition) {
-    const compute = function () {
-      if (allKeysAreSet(this, depends)) {
-        this[key] = definition.call(this, this)
-      } else {
-        this[key] = undefined
-      }
-    }
-    this.$on(depends, compute)
+    setupDefinition(this, key, depends, definition, "safe")
+  }
 
-    if (isInstance(this)) compute.call(this)
-
-    // TODO: Plutôt utiliser `trap`
-    $events(this).put(`outdate:${key}`, compute)
+  $customDefine (key, depends, definition) {
+    setupDefinition(this, key, depends, definition)
   }
 
   $compute () {
@@ -119,8 +111,45 @@ const { safe } = shortcuts(LiveObject)
 Object.assign(safe, call(Observable))
 
 /* Helpers */
-function allKeysAreSet (object, keys) {
-  return keys.reduce((bool, key) => bool && object[key] !== undefined, true)
+function setupDefinition (target, key, depends, definition, safeFlag) {
+  const compute = function () {
+    this[key] = computeDefinition(this, depends, definition, safeFlag)
+  }
+  target.$on(depends, compute)
+
+  if (isInstance(target)) compute.call(target)
+
+  // TODO: Plutôt utiliser `trap`
+  $events(target).put(`outdate:${key}`, compute)
+}
+
+function computeDefinition (object, depends, definition, safeFlag) {
+  const state = definitionDependsState(object, depends)
+
+  if (state === undefined) {
+    return undefined
+  } else if (safeFlag && state) {
+    return state
+  } else {
+    return noThrow(() => definition.call(object, object))
+  }
+}
+
+function definitionDependsState (object, depends) {
+  let error, promise
+
+  for (let key of depends) {
+    const value = object[key]
+    if (value === undefined) {
+      return
+    } else if (type(value) === "error") {
+      error = value
+    } else if (!error && type(value) === "promise") {
+      promise = value
+    }
+  }
+
+  return error || promise || null
 }
 
 /* Export */

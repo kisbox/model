@@ -3,6 +3,8 @@
 
 const LiveObject = require("../src/live-object.js")
 
+const { any } = jasmine
+
 /* Definition */
 
 describe("liveObject", () => {
@@ -211,6 +213,70 @@ describe("liveObject", () => {
       expect(instance.area).toBe(100)
       expect(proto.length).toBe(undefined)
       expect(proto.area).toEqual(undefined)
+    })
+
+    it("transparently handles special states", () => {
+      let count = 0
+      live.$define("bar", ["foo"], function () {
+        count++
+        return this.foo * 2
+      })
+
+      live.foo = new Promise(() => {})
+      expect(live.bar).toEqual(any(Promise))
+      expect(count).toBe(0)
+
+      live.foo = new Error()
+      expect(live.bar).toEqual(any(Error))
+      expect(count).toBe(0)
+
+      live.foo = undefined
+      expect(live.bar).toBe(undefined)
+      expect(count).toBe(0)
+    })
+
+    it("catches errors", () => {
+      live.$define("bar", ["foo"], function () {
+        throw new Error()
+      })
+      live.foo = 1
+
+      expect(live.bar).toEqual(any(Error))
+    })
+  })
+
+  describe(".$customDefine()", () => {
+    it("lets definition handle special states", () => {
+      let count = 0
+      live.$customDefine("bar", ["foo"], function () {
+        count++
+        return this.foo * 2
+      })
+
+      live.foo = 1
+      expect(live.bar).toBe(2)
+      expect(count).toBe(1)
+
+      live.foo = new Promise(() => {})
+      expect(live.bar).toEqual(NaN)
+      expect(count).toBe(2)
+
+      live.foo = new Error()
+      expect(live.bar).toEqual(NaN)
+      expect(count).toBe(3)
+
+      live.foo = undefined
+      expect(live.bar).toBe(undefined)
+      expect(count).toBe(3)
+    })
+
+    it("catches errors", () => {
+      live.$customDefine("bar", ["foo"], function () {
+        throw new Error()
+      })
+      live.foo = 1
+
+      expect(live.bar).toEqual(any(Error))
     })
   })
 
