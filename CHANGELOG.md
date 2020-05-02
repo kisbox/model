@@ -18,6 +18,18 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 1.0.0-beta.7 - 2020-05-02
+
+### Changed
+
+- Logic: Rewrite `$define`/`$customDefine` behavior. `$define()` now passes
+  erroneous/pending states automatically. `$customDefine()` can be used to
+  obtain the anterior behavior.
+
+### Fixed
+
+- Logic: Fix `undefined` state for `$define()` (LiveObject).
+
 ## 1.0.0-beta.6 - 2020-04-18
 
 ### Fixed
