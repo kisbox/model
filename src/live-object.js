@@ -142,10 +142,12 @@ function definitionDependsState (object, depends) {
     const value = object[key]
     if (value === undefined) {
       return
-    } else if (type(value) === "error") {
-      error = value
-    } else if (!error && type(value) === "promise") {
-      promise = value
+    } else if (!error) {
+      if (type(value) === "error") {
+        error = value
+      } else if (!promise && type(value) === "promise") {
+        promise = new Promise(() => {})
+      }
     }
   }
 
