@@ -3,11 +3,7 @@
  * Methods that allow to spread an object changes toward another.
  */
 const { forArgs, type } = require("@kisbox/utils")
-const {
-  constructor: { shortcuts, call },
-  any: { isInstance },
-  error: { noThrow }
-} = require("@kisbox/helpers")
+const { call, isInstance, noThrow } = require("@kisbox/helpers")
 
 const Observable = require("./observable")
 const $events = require("./lib/events")
@@ -107,7 +103,7 @@ class LiveObject extends Observable {
 }
 
 // TODO: make it cleaner
-const { safe } = shortcuts(LiveObject)
+const safe = call(LiveObject)
 Object.assign(safe, call(Observable))
 
 /* Helpers */

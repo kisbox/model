@@ -4,11 +4,7 @@
  *
  * @private
  **/
-const {
-  $meta: { $util },
-  error: { noThrow }
-} = require("@kisbox/helpers")
-
+const { $util, noThrow } = require("@kisbox/helpers")
 const { getPrototypeOf } = Object
 
 /* Definition */

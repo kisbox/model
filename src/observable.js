@@ -5,10 +5,7 @@
  * @exports Observable
  */
 const { forArgs } = require("@kisbox/utils")
-
-const {
-  constructor: { shortcuts }
-} = require("@kisbox/helpers")
+const { call } = require("@kisbox/helpers")
 
 const $events = require("./lib/events")
 const $traps = require("./lib/traps")
@@ -73,7 +70,7 @@ class Observable {
   $destroy () {}
 }
 
-const { safe } = shortcuts(Observable)
+const safe = call(Observable)
 
 /* Export */
 module.exports = Observable

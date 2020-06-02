@@ -33,8 +33,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.6",
-    "@kisbox/helpers": "^1.0.0-beta.8",
-    "@kisbox/utils": "^1.0.0-beta.2",
+    "@kisbox/helpers": "^1.0.0-beta.10",
+    "@kisbox/utils": "^1.0.0-beta.10",
     "core-js": "^3.6.5"
   }
 }

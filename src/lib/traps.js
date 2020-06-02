@@ -6,11 +6,7 @@
  **/
 
 const { type } = require("@kisbox/utils")
-const {
-  $meta: { $sideScope },
-  function: { either },
-  property: { lock, setProperty }
-} = require("@kisbox/helpers")
+const { $sideScope, either, lock, setProperty } = require("@kisbox/helpers")
 
 const $events = require("./events")
 

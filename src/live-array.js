@@ -9,10 +9,7 @@
  * dedicated logic when the array is mutated using the usual methods (`push`,
  * `pop`, `shift`, `unshift` and `splice`).
  */
-const {
-  constructor: { shortcuts, call },
-  property: { hideLock }
-} = require("@kisbox/helpers")
+const { call, hideLock } = require("@kisbox/helpers")
 
 const Observable = require("./observable")
 const $traps = require("./lib/traps")
@@ -78,8 +75,8 @@ class LiveArray extends Array {
   $change () {}
 }
 
-// TODO: fix & use safe.
-const { proto } = shortcuts(LiveArray)
+// TODO: use safe.
+const proto = LiveArray.prototype
 
 /* Mixin */
 
