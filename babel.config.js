@@ -8,7 +8,7 @@ module.exports = function (api) {
         {
           useBuiltIns: "usage",
           corejs: 3,
-          exclude: ["es.promise", "web.dom-collections.iterator"]
+          exclude: ["es.promise", "web.*"]
         }
       ]
     ],
