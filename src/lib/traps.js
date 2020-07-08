@@ -84,7 +84,10 @@ $traps.setValue = function (target, key, value, check) {
     // Auto-update promises...
     if (type(value) === "promise") {
       value
-        .catch((x) => x)
+        .catch((error) => {
+          console.error(error)
+          return error
+        })
         .then((resolved) => {
           // ... only when key hasn't been changed meanwhile.
           if (target[key] === value) {
