@@ -18,6 +18,12 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 1.0.0-beta.16 - 2020-07-25
+
+### Fixed
+
+- Logic: Fix LiveArray `sort()`. (It wasn't using the `compare` parameter)
+
 ## 1.0.0-beta.14 - 2020-07-08
 
 ### Added
