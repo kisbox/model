@@ -63,9 +63,9 @@ class LiveArray extends Array {
   /**
    * With LiveArrays, `.sort()` is non-destructive and returns a new object.
    */
-  sort () {
+  sort (compare) {
     const clone = this.slice()
-    call(Array).sort(clone)
+    call(Array).sort(clone, compare)
     return clone
   }
 
