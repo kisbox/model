@@ -5,6 +5,7 @@
  * @private
  **/
 const { $util, noThrow } = require("@kisbox/helpers")
+const { plan } = require("@kisbox/utils")
 const { getPrototypeOf } = Object
 
 /* Definition */
@@ -12,6 +13,9 @@ const $events = $util("/events/", {
   constructor: function (target) {
     this.provider = target
     this.clear()
+
+    const $change = () => reallyTrigger(target, this.handlers["$change"])
+    this.put("*", () => plan($change))
   },
 
   clear () {

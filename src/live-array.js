@@ -193,9 +193,5 @@ proto.$on("splice", function (args, returned) {
   }
 })
 
-proto.$on(["$set", "push", "pop", "shift", "unshift", "splice"], function () {
-  this.$change()
-})
-
 /* Export */
 module.exports = LiveArray
