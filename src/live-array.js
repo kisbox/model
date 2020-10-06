@@ -38,7 +38,6 @@ class LiveArray extends Array {
   }
 
   $map (generator) {
-    // TODO: setup traps only for root liveArray (not mirrors)
     const map = generator ? this.map(generator) : this.slice()
 
     hideLock(map, "generator", generator)
