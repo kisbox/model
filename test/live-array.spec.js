@@ -114,6 +114,19 @@ describe("liveArray", () => {
       })
     })
   })
+
+  describe(".$sort", () => {
+    it("produces a live sorted array", () => {
+      liveArray.push(0)
+
+      const compare = (a, b) => a - b
+      const liveSorted = liveArray.$sort(compare)
+
+      fullTest(liveArray, () => {
+        expect(liveSorted).toEqual(liveArray.sort(compare))
+      })
+    })
+  })
 })
 
 /* Helpers */

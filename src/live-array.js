@@ -10,6 +10,7 @@
  * `pop`, `shift`, `unshift` and `splice`).
  */
 const { call, hideLock } = require("@kisbox/helpers")
+const { plan } = require("@kisbox/utils")
 
 const Observable = require("./observable")
 const $traps = require("./lib/traps")
@@ -55,9 +56,37 @@ class LiveArray extends Array {
   }
 
   $sort (compare) {
-    const map = this.$map()
-    map.$on("$change", $traps(map).sort(compare))
-    return map
+    const clone = this.slice()
+    setupTraps(this)
+
+    // TODO: update may cause two '$change' events to happen in the same round.
+    const sort = () => $traps(clone).sort(compare)
+    const update = () => {
+      sort()
+      clone.$trigger("$change")
+    }
+
+    // Source array changes
+    clone.$listen(this, ["$add"], ([item]) => {
+      clone.push(item)
+      sort()
+    })
+    clone.$listen(this, ["$remove"], ([item]) => {
+      removeOnce(clone, item)
+    })
+
+    // Array LiveItem changes
+    clone.$forEach((item) => {
+      if (!$events.isIn(item)) return
+      clone.$listen(item, "$change", () => plan(update))
+    })
+    clone.$forExit((item) => {
+      if (!$events.isIn(item)) return
+      clone.$ignore(item)
+    })
+
+    update()
+    return clone
   }
 
   /**
@@ -192,6 +221,15 @@ proto.$on("splice", function (args, returned) {
     })
   }
 })
+
+/* Helpers */
+
+function removeOnce (array, item) {
+  const index = array.indexOf(item)
+  if (index === -1) return
+
+  array.splice(index, 1)
+}
 
 /* Export */
 module.exports = LiveArray
