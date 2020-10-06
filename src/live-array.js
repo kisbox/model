@@ -22,7 +22,7 @@ class LiveArray extends Array {
     setupTraps(this)
 
     this.$on("$add", ([item, index], returned, type, context) => {
-      callback(item, index, context)
+      callback.call(context, item, index, context)
     })
 
     this.forEach(callback)
@@ -32,7 +32,7 @@ class LiveArray extends Array {
     setupTraps(this)
 
     this.$on("$remove", ([item], returned, type, context) => {
-      callback(item, context)
+      callback.call(context, item, context)
     })
   }
 
