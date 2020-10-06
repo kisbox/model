@@ -95,17 +95,19 @@ mixinMethods.forEach((key) => proto[key] = Observable.prototype[key])
 
 const wrappedMethods = ["push", "pop", "shift", "unshift", "splice"]
 
-function methodWrapper (method) {
+function methodWrapper (methodName) {
+  const baseMethod = Array.prototype[methodName]
+
   return function () {
     if ($traps.isOn(this)) {
       // Traps are set - apply the method to the wrapped array & update traps.
       const trapped = $traps(this)
-      const returned = trapped[method].apply(trapped, arguments)
+      const returned = baseMethod.apply(trapped, arguments)
       updateTraps(this)
       return returned
     } else {
       // Traps are not set - it's a normal array.
-      return Array.prototype[method].apply(this, arguments)
+      return baseMethod.apply(this, arguments)
     }
   }
 }
