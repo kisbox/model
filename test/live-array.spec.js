@@ -101,60 +101,36 @@ describe("liveArray", () => {
   describe(".$map()", () => {
     it("produces a live map", () => {
       const liveMap = liveArray.$map()
-      expect(liveMap).toEqual(liveArray)
+      fullTest(liveArray, () => {
+        expect(liveMap).toEqual(liveArray)
+      })
+    })
 
-      liveArray[0] = 12
-      expect(liveMap).toEqual(liveArray)
-
-      liveArray.push("foo")
-      expect(liveMap).toEqual(liveArray)
-
-      liveArray.unshift("bar")
-      expect(liveMap).toEqual(liveArray)
-
-      liveArray[2] = 21
-      expect(liveMap).toEqual(liveArray)
-
-      liveArray.pop()
-      expect(liveMap).toEqual(liveArray)
-
-      liveArray.shift()
-      expect(liveMap).toEqual(liveArray)
-
-      liveArray.splice(1, 0, "foo", "bar")
-      expect(liveMap).toEqual(liveArray)
-
-      liveArray.splice(1, 2)
-      expect(liveMap).toEqual(liveArray)
+    it("produces a live projection", () => {
+      const transform = (x) => x + 1
+      const liveMap = liveArray.$map((x) => x + 1)
+      fullTest(liveArray, () => {
+        expect(liveMap).toEqual(liveArray.map(transform))
+      })
     })
   })
-
-  it("produces a live projection", () => {
-    const liveMap = liveArray.$map((x) => x + 1)
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-
-    liveArray[0] = 12
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-
-    liveArray.push("foo")
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-
-    liveArray.unshift("bar")
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-
-    liveArray[2] = 21
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-
-    liveArray.pop()
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-
-    liveArray.shift()
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-
-    liveArray.splice(1, 0, "foo", "bar")
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-
-    liveArray.splice(1, 2)
-    expect(liveMap).toEqual(liveArray.map((x) => x + 1))
-  })
 })
+
+/* Helpers */
+function fullTest (target, callback) {
+  callback()
+  fullTest.steps.forEach((step) => {
+    step(target)
+    callback()
+  })
+}
+
+fullTest.steps = [
+  (target) => target.push(1),
+  (target) => target.pop(),
+  (target) => target.shift(),
+  (target) => target.unshift(2),
+  (target) => target.splice(1, 0, 3, 4),
+  (target) => target.splice(1, 2),
+  (target) => target[0] = 5
+]
