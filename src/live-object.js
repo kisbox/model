@@ -33,7 +33,7 @@ class LiveObject extends Observable {
     if (!target) return
 
     forArgs(["value", "atoms"], arguments, (target, key) => {
-      if (target[key] !== undefined) {
+      if (key in target) {
         safe.$pull(this, key, target, key, transformer)
       }
     })
