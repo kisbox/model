@@ -39,6 +39,12 @@ class Observable {
     }
   }
 
+  $trap () {
+    forArgs(["atoms"], arguments, (type) => {
+      $traps.trapProperty(this, type)
+    })
+  }
+
   // Move $set here?
 
   /* (type, ...args)
