@@ -68,6 +68,7 @@ class Observable {
 
   // TODO: replace by melt
   $destroy () {}
+  $change () {}
 }
 
 const safe = call(Observable)
