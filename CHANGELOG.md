@@ -18,6 +18,24 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 1.0.0-beta.17 - 2020-11-07
+
+### Added
+
+- API: Add observable.\$trap().
+
+### Changed
+
+- Logic: Change '\$change' event specs.
+
+### Fixed
+
+- API: Set \$change as an observable event.
+- API: \$import() undefined keys when the property exist.
+- Logic: Fix context for $forEach/$forExit.
+- Logic: Fix methodWrapper (live-array.js).
+- Logic: Fix LiveArray .\$sort() method.
+
 ## 1.0.0-beta.16 - 2020-07-25
 
 ### Fixed
