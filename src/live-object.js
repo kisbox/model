@@ -2,8 +2,8 @@
 /**
  * Methods that allow to spread an object changes toward another.
  */
-const { forArgs, type } = require("@kisbox/utils")
-const { call, isInstance, noThrow } = require("@kisbox/helpers")
+const { type } = require("@kisbox/utils")
+const { call, xeach, keach, isInstance, noThrow } = require("@kisbox/helpers")
 
 const Observable = require("./observable")
 const $events = require("./lib/events")
@@ -24,7 +24,7 @@ class LiveObject extends Observable {
   $export (target, keys, transformer) {
     if (!target) return
 
-    forArgs(["value", "atoms"], arguments, (target, key) => {
+    xeach(keys, (key) => {
       safe.$push(this, key, target, key, transformer)
     })
   }
@@ -32,17 +32,15 @@ class LiveObject extends Observable {
   $import (target, keys, transformer) {
     if (!target) return
 
-    forArgs(["value", "atoms"], arguments, (target, key) => {
-      if (key in target) {
-        safe.$pull(this, key, target, key, transformer)
-      }
+    xeach(keys, (key) => {
+      safe.$pull(this, key, target, key, transformer)
     })
   }
 
   $pick (target, keys, transformer) {
     if (!target) return
 
-    forArgs(["value", "atoms"], arguments, (target, key) => {
+    xeach(keys, (key) => {
       if (key in target) {
         const value = target[key]
         this[key] = transformer ? transformer(value) : value
@@ -85,18 +83,18 @@ class LiveObject extends Observable {
     setupDefinition(this, key, depends, definition)
   }
 
-  $compute () {
+  $compute (keys) {
     // trap.outdate?
     const events = $events.get(this)
     if (!events) return
 
-    forArgs(["atoms"], arguments, (key) => {
+    xeach(keys, (key) => {
       events.trigger(`outdate:${key}`)
     })
   }
 
-  $set () {
-    forArgs(["keys:atom"], arguments, (key, value) => {
+  $set (keys, value) {
+    keach(keys, value, (key, value) => {
       $traps.setValue(this, key, value || this[key])
     })
   }

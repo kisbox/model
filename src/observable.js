@@ -4,8 +4,7 @@
  *
  * @exports Observable
  */
-const { forArgs } = require("@kisbox/utils")
-const { call } = require("@kisbox/helpers")
+const { call, xeach, keach } = require("@kisbox/helpers")
 
 const $events = require("./lib/events")
 const $traps = require("./lib/traps")
@@ -17,9 +16,10 @@ class Observable {
    * ([...types], handler)
    * ({ ...type: handler })
    */
-  $on () {
-    forArgs(["keys:atom"], arguments, (type, handler) => {
+  $on (types, handler) {
+    keach(types, handler, (type, handler) => {
       $traps.trapProperty(this, type)
+      // TODO: $events should handle property trapping when relevent
       $events(this).put(type, handler)
     })
   }
@@ -28,19 +28,19 @@ class Observable {
    * ([...types], [handler])
    * ({ ...type: handler })
    */
-  $off (types) {
+  $off (types, handler) {
     if (!types) {
       // delete this[$events.symbol]?
       $events(this).clear()
     } else {
-      forArgs(["keys:atom"], arguments, (type, handler) => {
+      keach(types, handler, (type, handler) => {
         $events(this).delete(type, handler)
       })
     }
   }
 
-  $trap () {
-    forArgs(["atoms"], arguments, (type) => {
+  $trap (types) {
+    xeach(types, (type) => {
       $traps.trapProperty(this, type)
     })
   }
@@ -53,21 +53,21 @@ class Observable {
    * TODO: remove this one! :)
    */
   $trigger (types, ...args) {
-    forArgs(["atoms"], [types], (type) => {
+    xeach(types, (type) => {
       const events = $events.get(this)
       if (events) events.trigger(this, type, args)
     })
   }
 
   // TODO: memory management
-  $listen () {
-    forArgs(["value", "keys:atom"], arguments, (target, event, callback) => {
+  $listen (target, events, callback) {
+    keach(events, callback, (event, callback) => {
       safe.$on(target, event, callback)
     })
   }
 
-  $ignore () {
-    forArgs(["value", "keys:atom"], arguments, (target, event, callback) => {
+  $ignore (target, events, callback) {
+    keach(events, callback, (event, callback) => {
       safe.$off(target, event, callback)
     })
   }
