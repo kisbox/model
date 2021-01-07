@@ -97,7 +97,7 @@ class LiveObject extends Observable {
 
   $set () {
     forArgs(["keys:atom"], arguments, (key, value) => {
-      $traps.setValue(this, key, value)
+      $traps.setValue(this, key, value || this[key])
     })
   }
 }
