@@ -9,7 +9,7 @@
  * dedicated logic when the array is mutated using the usual methods (`push`,
  * `pop`, `shift`, `unshift` and `splice`).
  */
-const { call, hideLock } = require("@kisbox/helpers")
+const { call, sync, hideLock } = require("@kisbox/helpers")
 const { plan } = require("@kisbox/utils")
 
 const Observable = require("./observable")
@@ -26,7 +26,8 @@ class LiveArray extends Array {
       callback.call(context, item, index, context)
     })
 
-    this.forEach(callback)
+    const maybePromises = this.map(callback)
+    return sync(maybePromises)
   }
 
   $forExit (callback) {
