@@ -24,6 +24,16 @@ class Observable {
     })
   }
 
+  $once (types, handler) {
+    keach(types, handler, (type, handler) => {
+      const wrappedhandler = function () {
+        this.$off(type, wrappedhandler)
+        handler(arguments)
+      }
+      this.$on(type, wrappedhandler)
+    })
+  }
+
   /* (type, [handler])
    * ([...types], [handler])
    * ({ ...type: handler })
