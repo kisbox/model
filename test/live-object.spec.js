@@ -118,8 +118,8 @@ describe("liveObject", () => {
       live.foo = true
       live2.$pull("foo", live)
       live2.$pull("bar", live)
-      expect(Object.keys(live)).toEqual(["foo", "bar"])
-      expect(Object.keys(live2)).toEqual(["foo", "bar"])
+      expect(Object.keys(live)).toEqual(["foo"])
+      expect(Object.keys(live2)).toEqual(["foo"])
     })
   })
 

@@ -50,13 +50,13 @@ class LiveObject extends Observable {
 
   /* pull/push */
   $pull (key, target, targetKey = key, transformer) {
+    if (!(targetKey in target)) return
+
     if (typeof target.$push === "function") {
       target.$push(targetKey, this, key, transformer)
     } else {
-      if (targetKey in target) {
-        const value = target[targetKey]
-        this[key] = transformer ? transformer(value) : value
-      }
+      const value = target[targetKey]
+      this[key] = transformer ? transformer(value) : value
     }
   }
 
