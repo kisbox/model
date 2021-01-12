@@ -18,6 +18,12 @@ Versioning](https://semver.org/spec/v2.0.0.html)**. Version syntax is
 backward-compatibility and can be updated to without risk of breakage. For major
 releases, please check this changelog before upgrading.
 
+## 1.0.0-beta.20 - 2021-01-12
+
+### Fixed
+
+- Logic: LiveObject.$pull() should not pull unexistent properties.
+
 ## 1.0.0-beta.19 - 2021-01-08
 
 ### Added
