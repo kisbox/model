@@ -100,9 +100,7 @@ class LiveObject extends Observable {
   }
 }
 
-// TODO: make it cleaner
 const safe = call(LiveObject)
-Object.assign(safe, call(Observable))
 
 /* Helpers */
 function setupDefinition (target, key, depends, definition, safeFlag) {
